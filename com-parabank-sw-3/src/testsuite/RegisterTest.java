@@ -59,9 +59,9 @@ public class RegisterTest extends BaseTest {
 
     driver.findElement(By.id("customer.username")).sendKeys("Kriti");
 
-    driver.findElement(By.id("customer.password")).sendKeys("Kri123456");
+    driver.findElement(By.id("customer.password")).sendKeys("Kom123456");
 
-    driver.findElement(By.id("repeatedPassword")).sendKeys("Kri123456");
+    driver.findElement(By.id("repeatedPassword")).sendKeys("Kom123456");
 
     driver.findElement(By.xpath("//input[@value='Register']")).click();
 
