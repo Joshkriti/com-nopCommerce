@@ -1,6 +1,7 @@
 package desktops;
 
 import homepage.TopMenuTest;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +15,7 @@ public class DesktopsTest extends TopMenuTest {
     String baseUrl = "https://tutorialsninja.com/demo/index.php?route=common/home";
 
     @Before
-    public void setupTest(){
+    public void setupTest() {
         openBrowser(baseUrl);
     }
 
@@ -32,12 +33,12 @@ public class DesktopsTest extends TopMenuTest {
         WebElement click = driver.findElement(By.xpath("//a[text()='Show AllDesktops']"));
         action.moveToElement(desktop).moveToElement(click).click().build().perform();
 
-        selectMenu("Show All Desktops");
 
         WebElement dropDown = driver.findElement(By.cssSelector("*[id='input-sort']"));
         Select select = new Select(dropDown);
         select.selectByVisibleText("Name (A - Z)");
     }
+
     /*
     2. Test name verifyProductAddedToShoppingCartSuccessFully()
         2.1 Mouse hover on Desktops Tab. and click --> 2.2 Click on “Show All Desktops”
@@ -51,21 +52,22 @@ public class DesktopsTest extends TopMenuTest {
         2.15 Verify the Todat "£74.73"
      */
     @Test
-    public void verifyProductAddedToShoppingCartSuccessFully(){
+    public void verifyProductAddedToShoppingCartSuccessFully() {
+
         Actions action = new Actions(driver);
-        WebElement laptopAndNotebooks = driver.findElement(By.xpath("//a[text()='Laptops & Notebooks']"));
-        WebElement click = driver.findElement(By.xpath("//a[text()='Show AllLaptops & Notebooks']"));
-        action.moveToElement(laptopAndNotebooks).moveToElement(click).click().build().perform();
+        WebElement desktop = driver.findElement(By.xpath("//a[text()='Desktops']"));
+        WebElement click = driver.findElement(By.xpath("//a[text()='Show AllDesktops']"));
+        action.moveToElement(desktop).moveToElement(click).click().build().perform();
 
-        selectMenu("Show All Laptops & Notebooks");
+        selectMenu("Show All Desktops");
 
-        WebElement dropDown = driver.findElement(By.cssSelector("*[id='input-sort']"));
+        WebElement dropDown = driver.findElement(By.xpath("//*[@id='input-sort']"));
         Select select = new Select(dropDown);
         select.selectByVisibleText("Name (A - Z)");
 
         driver.findElement(By.xpath("//*[text()='HP LP3065']")).click();
 
-        driver.findElement(By.name("option[225]")).clear();;
+        driver.findElement(By.name("option[225]")).clear();
 
         driver.findElement(By.name("option[225]")).sendKeys("2022-11-30");
 
@@ -78,23 +80,34 @@ public class DesktopsTest extends TopMenuTest {
         String actualMessage = driver.findElement(By.cssSelector("*[class='alert alert-success alert-dismissible']")).getText();
         System.out.println(actualMessage);
         String expectingMessage = "Success: You have added HP LP3065 to your shopping cart!\n" + "×";
-        Assert.assertEquals("Message to add into card successfully ",actualMessage,expectingMessage);
+        Assert.assertEquals("Message to add into card successfully ", actualMessage, expectingMessage);
 
         driver.findElement(By.xpath("//a[text()='shopping cart']")).click();
 
         String actualShoppingCart = driver.findElement(By.xpath("//div[@id='content']/h1[1]")).getText();
-        String expectingShoppingCart = "Shopping Cart (1.00kg) ";
-        Assert.assertEquals(actualShoppingCart,expectingShoppingCart);
+        String expectingShoppingCart = "Shopping Cart  (1.00kg)";
+        Assert.assertEquals(actualShoppingCart, expectingShoppingCart);
 
+        String actualProductName = driver.findElement(By.xpath("//*[@id='content']/form/div/table/tbody/tr/td[2]/a")).getText();
+        String expectingProductName = "HP LP3065";
+        Assert.assertEquals("Product Name: ", actualProductName, expectingProductName);
 
+        String actualDeliveryDate = driver.findElement(By.xpath("//*[@id='content']/form/div/table/tbody/tr/td[2]/small")).getText();
+        String expectingDeliveryDate = "Delivery Date:2022-11-30";
+        Assert.assertEquals("Delivery Date: ", actualDeliveryDate, expectingDeliveryDate);
 
+        String actualModel = driver.findElement(By.xpath("//*[@id='content']/form/div/table/tbody/tr/td[3]")).getText();
+        String expectingModel = "Product 21";
+        Assert.assertEquals("Model name: ", actualModel, expectingModel);
 
+        String actualTotal = driver.findElement(By.xpath("//*[@id='content']/form/div/table/tbody/tr/td[6]")).getText();
+        String expectingTotal = "$122.00";
+        Assert.assertEquals("Total cost: ", actualTotal, expectingTotal);
+    }
 
-
-
-
-
-
-
+    @After
+    public void tearDown() {
+        //closeBrowser();
     }
 }
+
