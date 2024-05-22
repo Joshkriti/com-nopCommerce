@@ -284,17 +284,6 @@ public class ElectronicsTest extends BaseTest {
         //2.44 Verify the URL is “https://demo.nopcommerce.com/”
         String URL = driver.getCurrentUrl();
         Assert.assertEquals(URL, "https://demo.nopcommerce.com/" );
-
-
-
-
-
-
-
-
-
-
-
     }
     @After
     public void tearDown(){
