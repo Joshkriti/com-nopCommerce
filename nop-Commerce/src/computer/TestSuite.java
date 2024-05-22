@@ -7,8 +7,11 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 public class TestSuite extends BaseTest {
@@ -43,7 +46,7 @@ public class TestSuite extends BaseTest {
 
     //2. Test name verifyProductAddedToShoppingCartSuccessFully()
     @Test
-    public void verifyProductAddedToShoppingCartSuccessFully(){
+    public void verifyProductAddedToShoppingCartSuccessFully() throws InterruptedException {
         //2.1 Click on Computer Menu.
         driver.findElement(By.xpath("//a[text()='Computers ']")).click();
 
@@ -56,7 +59,11 @@ public class TestSuite extends BaseTest {
         select.selectByVisibleText("Name: A to Z");
 
         //2.4 Click on "Add To Cart"
-       // driver.findElement(By.xpath("//div[@class='add-info']/div[2]/button[1]")).click();
+       WebElement button= driver.findElement(By.xpath("//div[@class='item-grid']/div[1]/div/div[2]/div[3]/div[2]/button[1]"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(button));
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//div[@class='item-grid']/div[1]/div/div[2]/div[3]/div[2]/button[1]")).click();
 
 
         //2.5 Verify the Text "Build your own computer"
@@ -75,12 +82,12 @@ public class TestSuite extends BaseTest {
         select2.selectByVisibleText("8GB [+$60.00]");
 
         //2.8 Select HDD radio "400 GB [+$100.00]"
-        WebElement selectHDD = driver.findElement(By.xpath("//dt[@id='product_attribute_label_3']/label[1]\n" + "*"));
+        WebElement selectHDD = driver.findElement(By.xpath("//dt[@id='product_attribute_label_3']/label[1]"));
         Select select3 = new Select(selectHDD);
         select3.selectByVisibleText("400 GB [+$100.00]");
 
         //2.9 Select OS radio "Vista Premium [+$60.00]"
-        WebElement selectRadio = driver.findElement(By.xpath("//dt[@id='product_attribute_label_4']/label[1]\n" + "*"));
+        WebElement selectRadio = driver.findElement(By.xpath("//dt[@id='product_attribute_label_4']/label[1]"));
         Select select4 = new Select(selectRadio);
         select4.selectByVisibleText("Vista Premium [+$60.00]");
 

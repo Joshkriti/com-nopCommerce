@@ -1,6 +1,6 @@
 package laptopsandnotebooks;
 
-import homepage.TopMenuTest;
+import browser_testing.BaseTest;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
-public class LaptopsAndNotebooksTest extends TopMenuTest {
+public class LaptopsAndNotebooksTest extends BaseTest {
 
     String baseUrl = "http://tutorialsninja.com/demo/index.php?";
 
@@ -80,6 +80,54 @@ public class LaptopsAndNotebooksTest extends TopMenuTest {
         WebElement dropDown = driver.findElement(By.xpath("//*[@class='form-control']"));
         Select select = new Select(dropDown);
         select.selectByVisibleText("Price (High > Low)");
+
+        driver.findElement(By.linkText("MacBook")).click();
+
+        String actualText= driver.findElement(By.xpath("//*[@id='content']/div/div[2]/h1")).getText();
+        String expectingText = "MacBook";
+        Assert.assertEquals("MacBook: ",actualText,expectingText);
+
+        driver.findElement(By.id("button-cart")).click();
+
+        String actualMessage = driver.findElement(By.cssSelector("*[class='alert alert-success alert-dismissible']")).getText();
+        System.out.println(actualMessage);
+        String expectingMessage = "Success: You have added MacBook to your shopping cart!\n" + "×";
+        Assert.assertEquals("Verification message: ", actualMessage,expectingMessage);
+
+        driver.findElement(By.xpath("//a[text()='shopping cart']")).click();
+
+        String actualShoppingCart = driver.findElement(By.xpath("//div[@id='content']/h1[1]")).getText();
+        String expectingShoppingCart = "Shopping Cart  (0.00kg)";
+        Assert.assertEquals(actualShoppingCart, expectingShoppingCart);
+
+        /*String actualProductName = driver.findElement(By.xpath("//*[@id='cart']/ul/li[1]/table/tbody/tr/td[2]/a")).getText();
+        String expectingProductName = "MacBook";
+        Assert.assertEquals(expectingProductName,actualProductName);*/
+
+        driver.findElement(By.xpath("//*[@class='input-group btn-block']/input")).clear();
+
+        driver.findElement(By.xpath("//*[@class='input-group btn-block']/input")).sendKeys("2");
+
+        driver.findElement(By.cssSelector("*[class='fa fa-refresh']")).click();
+
+        String actualVerifyMessage = driver.findElement(By.cssSelector("*[class='alert alert-success alert-dismissible']>i")).getText();
+        System.out.println(actualVerifyMessage);
+        String expectingVerifyMessage = "Success: You have modified your shopping cart!\n" + "×";
+        Assert.assertEquals(actualVerifyMessage,expectingVerifyMessage);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
