@@ -110,10 +110,19 @@ public class LaptopsAndNotebooksTest extends BaseTest {
 
         driver.findElement(By.cssSelector("*[class='fa fa-refresh']")).click();
 
-        String actualVerifyMessage = driver.findElement(By.cssSelector("*[class='alert alert-success alert-dismissible']>i")).getText();
+        String actualVerifyMessage = driver.findElement(By.cssSelector("*[class='alert alert-success alert-dismissible']")).getText();
         System.out.println(actualVerifyMessage);
         String expectingVerifyMessage = "Success: You have modified your shopping cart!\n" + "×";
-        Assert.assertEquals(actualVerifyMessage,expectingVerifyMessage);
+        Assert.assertEquals(expectingVerifyMessage,actualVerifyMessage);
+
+        String actualTotal = driver.findElement(By.xpath("//*[@id='content']/div[2]/div/table/tbody/tr[4]/td[2]")).getText();
+        String expectingTotal = "$1,204.00";
+        Assert.assertEquals("Total cost: ", actualTotal,expectingTotal);
+
+        driver.findElement(By.xpath("//*[@class='pull-right']/a")).click();
+
+
+
 
 
 
