@@ -1,6 +1,7 @@
 package myaccount;
 
 import browser_testing.BaseTest;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +19,7 @@ public class MyAccountTest extends BaseTest {
         openBrowser(baseUrl);
     }
 
-    public void selectMyAccountOptions(String option) {
+    public void selectMyAccountRegister(String option) {
         WebElement dropDown = driver.findElement(By.xpath("//a[@title='My Account']/span[1]"));
         dropDown.click();
         List<WebElement> optionsAccount = driver.findElements(By.xpath("//*[@id='top-links']/ul/li[2]/ul/li[1]/a"));
@@ -29,7 +30,7 @@ public class MyAccountTest extends BaseTest {
             }
         }
        }
-        public void selectMyAccount(String option) {
+        public void selectMyAccountLogin (String option) {
             WebElement dropDown1 = driver.findElement(By.xpath("//a[@title='My Account']/span[1]"));
             dropDown1.click();
             List<WebElement> optionsAccount1 = driver.findElements(By.xpath("//*[@id='top-links']/ul/li[2]/ul/li[2]/a"));
@@ -39,9 +40,17 @@ public class MyAccountTest extends BaseTest {
                     options1.click();
                 }
             }
-
-
-
+        }
+        public  void selectMyAccountLogout(String option){
+        WebElement dropdown2 = driver.findElement(By.xpath("//a[@title='My Account']/span[1]"));
+        dropdown2.click();
+        List <WebElement> logoutOption = driver.findElements(By.xpath("//*[@class='dropdown-menu dropdown-menu-right']/li[5]/a"));
+        for (WebElement logout: logoutOption){
+            if (logout.getText().equalsIgnoreCase("Logout")){
+                System.out.println(logout.getText());
+                logout.click();
+            }
+        }
     }
     /*
     1. Test name verifyUserShouldNavigateToRegisterPageSuccessfully()
@@ -52,7 +61,7 @@ public class MyAccountTest extends BaseTest {
     @Test
     public void verifyUserShouldNavigateToRegisterPageSuccessfully(){
 
-        selectMyAccountOptions("Register");
+        selectMyAccountRegister("Register");
 
         String actualText = driver.findElement(By.cssSelector("div[id='content']>h1")).getText();
         String expectingText = "Register Account";
@@ -68,7 +77,7 @@ public class MyAccountTest extends BaseTest {
     @Test
     public void verifyUserShouldNavigateToLoginPageSuccessfully(){
 
-        selectMyAccount("Login");
+        selectMyAccountLogin("Login");
 
         String actualLoginText = driver.findElement(By.xpath("//*[@id='content']/div/div[2]/div/h2")).getText();
         String expectingLoginText = "Returning Customer";
@@ -78,10 +87,10 @@ public class MyAccountTest extends BaseTest {
     }
     //3. Test name verifyThatUserRegisterAccountSuccessfully()
     @Test
-    public void verifyThatUserRegisterAccountSuccessfully(){
+    public void verifyThatUserRegisterAccountSuccessfully() throws InterruptedException {
         //3.1 Click on My Account Link.
         //3.2 Call the method “selectMyAccountOptions” method and pass the parameter “Register”
-        selectMyAccountOptions("Register");
+        selectMyAccountRegister("Register");
 
         //3.3 Enter First Name
         driver.findElement(By.name("firstname")).sendKeys("Kriti");
@@ -90,7 +99,7 @@ public class MyAccountTest extends BaseTest {
         driver.findElement(By.name("lastname")).sendKeys("Josh");
 
         //3.5 Enter Email
-        driver.findElement(By.name("email")).sendKeys("Kritijosh1@gmail.com");
+        driver.findElement(By.name("email")).sendKeys("Kritijosh12@gmail.com");
 
         //3.6 Enter Telephone
         driver.findElement(By.name("telephone")).sendKeys("07715297848");
@@ -110,6 +119,8 @@ public class MyAccountTest extends BaseTest {
         //3.11 Click on Continue button
         driver.findElement(By.xpath("//*[@class='btn btn-primary']")).click();
 
+        Thread.sleep(2000);
+
         //3.12 Verify the message “Your Account Has Been Created!”
         String actualVerifyMessage = driver.findElement(By.xpath("//*[@id='content']/h1")).getText();
         String expectingVerifyMessage = "Your Account Has Been Created!";
@@ -120,31 +131,57 @@ public class MyAccountTest extends BaseTest {
 
         //3.14 Click on My Account Link.
         //3.15 Call the method “selectMyAccountOptions” method and pass the parameter “Logout”
-        //selectMyAccount("Login");
+        selectMyAccountLogout("Logout");
 
        //3.16 Verify the text “Account Logout”
+        String actualLogout = driver.findElement(By.cssSelector("div[id='content']>h1")).getText();
+        String expectingLogout = "Account Logout";
+        Assert.assertEquals(actualLogout,expectingLogout);
+
+        Thread.sleep(2000);
 
        //3.17 Click on Continue button
-
-
-
+        driver.findElement(By.xpath("//*[@id='content']/div/div/a")).click();
     }
-    /*
-    4. Test name verifyThatUserShouldLoginAndLogoutSuccessfully()
-4.1 Click on My Account Link.
-4.2 Call the method “selectMyAccountOptions” method and pass the parameter
-“Login”
-4.3 Enter Email address
-4.4 Enter Last Name
-4.5 Enter Password
-4.6 Click on Login button
-4.7 Verify text “My Account”
-4.8 Click on My Account Link.
-4.9 Call the method “selectMyAccountOptions” method and pass the parameter
-“Logout”
-4.10 Verify the text “Account Logout”
-4.11 Click on Continue button
-     */
+
+    //4. Test name verifyThatUserShouldLoginAndLogoutSuccessfully()
+    @Test
+    public void verifyThatUserShouldLoginAndLogoutSuccessfully() throws InterruptedException {
+        //4.1 Click on My Account Link.
+        //4.2 Call the method “selectMyAccountOptions” method and pass the parameter “Login”
+        selectMyAccountLogin("Login");
+
+        //4.3 Enter Email address
+        driver.findElement(By.id("input-email")).sendKeys("Kritijosh12@gmail.com");
+
+        //4.4 Enter Password
+        driver.findElement(By.id("input-password")).sendKeys("Kom123456");
+
+        //4.5 Click on Login button
+        driver.findElement(By.cssSelector("input[value='Login']")).click();
+
+        Thread.sleep(2000);
+
+        //4.6 Verify text “My Account”
+        String actualMyAccount = driver.findElement(By.xpath("//*[@id='content']/h2[1]")).getText();
+        String expectingMyAccount = "My Account";
+        Assert.assertEquals(actualMyAccount,expectingMyAccount);
+
+        //4.9 Call the method “selectMyAccountOptions” method and pass the parameter “Logout”
+        selectMyAccountLogout("Logout");
+
+        //4.10 Verify the text “Account Logout”
+        String actualLogout = driver.findElement(By.cssSelector("div[id='content']>h1")).getText();
+        String expectingLogout = "Account Logout";
+        Assert.assertEquals(actualLogout,expectingLogout);
+
+        //4.11 Click on Continue button
+        driver.findElement(By.xpath("//*[@id='content']/div/div/a")).click();
+    }
+    @After
+    public void tearDown(){
+       // closeBrowser();
+    }
 
     }
 
